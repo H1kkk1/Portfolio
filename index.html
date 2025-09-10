@@ -1,88 +1,172 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="pl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Portfolio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moje Portfolio</title>
   <style>
-    /* make the demo full page */
-    html,body { height:100%; margin:0; }
-    #vanta-bg { width:100%; height:100%; position:fixed; inset:0; z-index:0; }
-    /* content shown on top of Vanta */
-    .content {
-      position:relative;
-      z-index:1;
-      color:#fff;
-      font-family: Inter, system-ui, sans-serif;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      height:100%;
-      pointer-events: none; /* let mouse pass through to Vanta by default */
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #7b2ff7);
+      background-size: 400% 400%;
+      animation: gradientMove 10s ease infinite;
+      color: white;
+      line-height: 1.6;
     }
-    .card {
-      background: rgba(0,0,0,0.35);
-      padding:28px;
-      border-radius:12px;
-      pointer-events: auto; /* allow clicks on this area if needed */
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      background: rgba(0, 0, 0, 0.3);
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(8px);
     }
+
+    header h1 {
+      color: #a855f7;
+      font-size: 24px;
+    }
+
+    nav a {
+      margin-left: 20px;
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #a855f7;
+    }
+
+    section {
+      max-width: 1000px;
+      margin: 80px auto;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-top: 60px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .hero h2 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .hero span {
+      color: #a855f7;
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .project-card {
+      background: #1e1b3a;
+      padding: 20px;
+      border-radius: 12px;
+      transition: transform 0.3s;
+    }
+
+    .project-card:hover {
+      transform: scale(1.05);
+    }
+
+    .project-card h4 {
+      margin-top: 0;
+      color: #a855f7;
+    }
+
+    .contact {
+      text-align: center;
+    }
+
+    .icons a {
+      margin: 0 15px;
+      color: #a855f7;
+      font-size: 28px;
+      transition: color 0.3s;
+    }
+
+    .icons a:hover {
+      color: white;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+      
+    }
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+}
   </style>
+  
+  <script src="https://kit.fontawesome.com/a2e0b5c6a4.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <!-- Vanta container -->
-  <div id="vanta-bg"></div>
 
-  <!-- Your page content -->
-  <div class="content">
-    <div class="card">
-      <h1>VANTA.TRUNK</h1>
-      <p>Interactive animated background — move your mouse or touch.</p>
+  <header>
+    <h1>Moje Portfolio</h1>
+    <nav>
+      <a href="#about">O mnie</a>
+      <a href="#projects">Projekty</a>
+      <a href="#contact">Kontakt</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Cześć, jestem <span>Filip Stanaszek</span></h2>
+    <p>GOAT</p>
+  </section>
+
+  <section id="about">
+    <h3>O mnie</h3>
+    <p>
+      Doświadczenia brak chęci dla odmiany też ale za to jak sie przyloze to moge cie ograc w karcianke.
+    </p>
+  </section>
+
+  <section id="projects">
+    <h3>Projekty</h3>
+    <div class="projects">
+      <div class="project-card">
+        <h4>Projekt 1</h4>
+        <p>2D neskonczona gra</p>
+        <a href="#" target="_blank">Zobacz na GitHubie</a>
+      </div>
+      <div class="project-card">
+        <h4>Projekt 2</h4>
+        <p>CWEL</p>
+        <a href="#" target="_blank">Zobacz na GitHubie</a>
+      </div>
+      <div class="project-card">
+        <h4>Projekt 3</h4>
+        <p>CWEL</p>
+        <a href="#" target="_blank">Zobacz na GitHubie</a>
+      </div>
     </div>
-  </div>
+  </section>
 
-  <!-- three.js (must load before vanta) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
-  <!-- Vanta trunk effect -->
-  <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.trunk.min.js"></script>
+  <section id="contact" class="contact">
+    <h3>Kontakt</h3>
+    <div class="icons">
+      <a href="https://github.com/H1kkk1" target="_blank"><i class="fab fa-github"></i></a>
+      
+      <a href="mailto:stanaszekfilip@gmail.com"><i class="fas fa-envelope"></i></a>
+    </div>
+  </section>
 
-  <script>
-    // Keep a reference so you can destroy later (required for SPA frameworks)
-    let vantaEffect = null;
-
-    // Initialize when DOM is ready
-    document.addEventListener('DOMContentLoaded', () => {
-      vantaEffect = VANTA.TRUNK({
-        el: "#vanta-bg",
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-        minHeight: 200.00,
-        minWidth: 200.00,
-        scale: 1.00,
-        scaleMobile: 1.00,
-
-        // Trunk-specific options (examples)
-        color: 0x6dd5ed,       // main color (hex)
-        backgroundColor: 0x0b1020,
-        spacing: 30.0,         // distance between "branches"
-        glowColor: 0xffffff,   // glow highlight
-        showDots: true,        // small dots on branches
-        branchWidth: 2.5,
-        turbulence: 0.5,
-      });
-    });
-
-    // Example cleanup when unloading (important in single-page apps)
-    window.addEventListener('beforeunload', () => {
-      if (vantaEffect && typeof vantaEffect.destroy === 'function') {
-        vantaEffect.destroy();
-      }
-    });
-  </script>
-
-
-  
 </body>
 </html>
-
 
