@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dream Animation</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/221808/sky.jpg" class="background" />
+
+    <!-- Circles will be added by JS -->
+    <script>
+      const container = document.querySelector('.container');
+      for (let i = 0; i < 100; i++) {
+        const cWrap = document.createElement('div');
+        cWrap.className = 'circle-container';
+        const c = document.createElement('div');
+        c.className = 'circle';
+
+        // random size
+        const size = Math.random() * 8 + 2;
+        cWrap.style.width = `${size}px`;
+        cWrap.style.height = `${size}px`;
+
+        // random positions
+        const startY = 100 + Math.random() * 20;
+        const startX = Math.random() * 100;
+        const endY = -startY - Math.random() * 30;
+        const duration = 20000 + Math.random() * 15000;
+        const delay = Math.random() * 30000;
+
+        const moveName = `move-${i}`;
+        const style = document.createElement('style');
+        style.innerHTML = `
+          @keyframes ${moveName} {
+            from { transform: translate3d(${startX}vw, ${startY}vh, 0); }
+            to { transform: translate3d(${Math.random()*100}vw, ${endY}vh, 0); }
+          }
+        `;
+        document.head.appendChild(style);
+
+        cWrap.style.animation = `${moveName} ${duration}ms linear ${delay}ms infinite`;
+
+        cWrap.appendChild(c);
+        container.appendChild(cWrap);
+      }
+    </script>
+
+    <p class="message">
+      all your dreams can come true<br>if you have the courage to pursue them
+    </p>
+  </div>
+</body>
+</html>
