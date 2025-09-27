@@ -120,7 +120,7 @@ export default function App() {
       <div className={`settings-panel ${isPanelOpen ? 'open' : ''}`}>
         <h2 style={{ color: currentScheme.accent }}>Theme Settings</h2>
         
-        {/* KOLORKI*/}
+        {/* Color Scheme */}
         <div className="setting-group">
           <label>Color Scheme</label>
           {Object.entries(colorSchemes).map(([key, scheme]) => (
@@ -139,7 +139,7 @@ export default function App() {
           ))}
         </div>
 
-        {/* Parallax SLIDER*/}
+        {/* Parallax Intensity */}
         <div className="setting-group">
           <label>
             Parallax Intensity: {Math.round(settings.parallaxIntensity * 100)}%
@@ -156,7 +156,7 @@ export default function App() {
           />
         </div>
 
-        {/* DENSITY SLIDER*/}
+        {/* Particle Density */}
         <div className="setting-group">
           <label>
             Particle Density: {settings.particleDensity}
@@ -173,7 +173,7 @@ export default function App() {
           />
         </div>
 
-        {/* SPEED SLIDER*/}
+        {/* Animation Speed */}
         <div className="setting-group">
           <label>
             Animation Speed: {Math.round(settings.animationSpeed * 100)}%
@@ -190,7 +190,7 @@ export default function App() {
           />
         </div>
 
-        {/* REset GUZIOR*/}
+        {/* Reset Button */}
         <button
           className="reset-button"
           onClick={() => setSettings({
