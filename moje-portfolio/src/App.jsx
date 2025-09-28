@@ -6,7 +6,7 @@ export default function App() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   
-  // Theme settings
+  // Kolorki w tle
   const [settings, setSettings] = useState({
     colorScheme: 'purple',
     parallaxIntensity: 1,
@@ -14,30 +14,45 @@ export default function App() {
     animationSpeed: 1
   });
 
-  // Particle system state
   const [particles, setParticles] = useState([]);
+  
+  const [cursorTrail, setCursorTrail] = useState([]);
+  
+  
+  const [visibleProjects, setVisibleProjects] = useState([]);
 
   const colorSchemes = {
-    purple: { hueBase: 270, hueRange: 30, accent: '#d18aff', name: 'Purple Dream' },
-    neonGreen: { hueBase: 120, hueRange: 40, accent: '#39ff14', name: 'Neon Green' },
-    oceanBlue: { hueBase: 200, hueRange: 50, accent: '#00d4ff', name: 'Ocean Blue' },
-    sunsetOrange: { hueBase: 20, hueRange: 40, accent: '#ff6b35', name: 'Sunset Orange' },
-    cyberpink: { hueBase: 320, hueRange: 30, accent: '#ff007f', name: 'Cyber Pink' }
+    purple: { hueBase: 270, hueRange: 30, accent: '#d18aff', name: 'Purple' },
+    neonGreen: { hueBase: 120, hueRange: 40, accent: '#39ff14', name: 'green' },
+    oceanBlue: { hueBase: 200, hueRange: 50, accent: '#00d4ff', name: 'Blue' },
+    sunsetOrange: { hueBase: 20, hueRange: 40, accent: '#f04501ff', name: 'Orange' },
+    cyberpink: { hueBase: 320, hueRange: 30, accent: '#ff007f', name: 'Pink' }
   };
 
   useEffect(() => {
     const handleMouseMove = (e) => {
       const { innerWidth, innerHeight } = window;
-      setMousePos({
+      const newMousePos = {
         x: e.clientX / innerWidth,
         y: e.clientY / innerHeight,
-      });
+      };
+      setMousePos(newMousePos);
+      
+      //  Kursor slad 
+      const trailParticle = {
+        id: Date.now() + Math.random(),
+        x: e.clientX,
+        y: e.clientY,
+        life: 1
+      };
+      
+      setCursorTrail(prev => [...prev.slice(-20), trailParticle]);
     };
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Initialize particles
+  // Inicjalizcja particli
   useEffect(() => {
     const newParticles = [];
     for (let i = 0; i < settings.particleDensity; i++) {
@@ -54,7 +69,7 @@ export default function App() {
     setParticles(newParticles);
   }, [settings.particleDensity]);
 
-  // Animate particles
+  // Animacja partykli
   useEffect(() => {
     const interval = setInterval(() => {
       setParticles(prev => prev.map(particle => ({
@@ -66,6 +81,38 @@ export default function App() {
     
     return () => clearInterval(interval);
   }, [settings.animationSpeed]);
+
+  // Animacja kursor
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCursorTrail(prev => 
+        prev.map(particle => ({ ...particle, life: particle.life - 0.05 }))
+           .filter(particle => particle.life > 0)
+      );
+    }, 16);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  // Animacja 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const projectIndex = parseInt(entry.target.dataset.index);
+            setVisibleProjects(prev => [...new Set([...prev, projectIndex])]);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(card => observer.observe(card));
+
+    return () => observer.disconnect();
+  }, []);
 
   const currentScheme = colorSchemes[settings.colorScheme];
   const hue = currentScheme.hueBase + mousePos.x * currentScheme.hueRange;
@@ -90,6 +137,21 @@ export default function App() {
         '--animation-speed': settings.animationSpeed
       }}
     >
+      {/*Trail Cursor */}
+      {cursorTrail.map(trail => (
+        <div
+          key={trail.id}
+          className="cursor-trail"
+          style={{
+            left: `${trail.x}px`,
+            top: `${trail.y}px`,
+            backgroundColor: currentScheme.accent,
+            opacity: trail.life * 0.8,
+            transform: `scale(${trail.life})`,
+          }}
+        />
+      ))}
+
       {/* Particles */}
       {particles.map(particle => (
         <div
@@ -107,7 +169,7 @@ export default function App() {
         />
       ))}
 
-      {/* Settings Panel Toggle */}
+      {/* Settings*/}
       <button
         className="settings-toggle"
         onClick={() => setIsPanelOpen(!isPanelOpen)}
@@ -116,11 +178,11 @@ export default function App() {
         ⚙️
       </button>
 
-      {/* Settings Panel */}
+      {/* Settings v2 */}
       <div className={`settings-panel ${isPanelOpen ? 'open' : ''}`}>
         <h2 style={{ color: currentScheme.accent }}>Theme Settings</h2>
         
-        {/* KOLORKI*/}
+        {/* Kolorki v2*/}
         <div className="setting-group">
           <label>Color Scheme</label>
           {Object.entries(colorSchemes).map(([key, scheme]) => (
@@ -129,6 +191,7 @@ export default function App() {
               className={`scheme-button ${settings.colorScheme === key ? 'active' : ''}`}
               onClick={() => updateSetting('colorScheme', key)}
               style={{
+                //key=z tablicy z góry
                 background: settings.colorScheme === key ? scheme.accent : 'rgba(255,255,255,0.1)',
                 color: settings.colorScheme === key ? 'black' : 'white',
                 borderColor: scheme.accent
@@ -139,7 +202,7 @@ export default function App() {
           ))}
         </div>
 
-        {/* Parallax SLIDER*/}
+        {/* Parallax slider*/}
         <div className="setting-group">
           <label>
             Parallax Intensity: {Math.round(settings.parallaxIntensity * 100)}%
@@ -156,7 +219,7 @@ export default function App() {
           />
         </div>
 
-        {/* DENSITY SLIDER*/}
+        {/* Particle slider */}
         <div className="setting-group">
           <label>
             Particle Density: {settings.particleDensity}
@@ -173,7 +236,7 @@ export default function App() {
           />
         </div>
 
-        {/* SPEED SLIDER*/}
+        {/* Animation slider */}
         <div className="setting-group">
           <label>
             Animation Speed: {Math.round(settings.animationSpeed * 100)}%
@@ -190,7 +253,7 @@ export default function App() {
           />
         </div>
 
-        {/* REset GUZIOR*/}
+        {/* Reset */}
         <button
           className="reset-button"
           onClick={() => setSettings({
@@ -210,11 +273,10 @@ export default function App() {
           transform: `translate(${headerParallaxX}px, ${headerParallaxY}px)`,
         }}
       >
-        <h1 style={{ color: currentScheme.accent }}>Moje Portfolio</h1>
+        <h1 style={{ color: currentScheme.accent }}>My Stuff</h1>
         <nav>
-          <a href="#about">O mnie</a>
-          <a href="#projects">Projekty</a>
-          <a href="#contact">Kontakt</a>
+          <a href="#about">About me</a>
+          <a href="#projects">Projects</a>
         </nav>
       </motion.header>
 
@@ -234,35 +296,51 @@ export default function App() {
       </motion.section>
 
       <section id="about" className="section">
-        <h3>O mnie</h3>
+        <h3>About me</h3>
         <p>
           NIE
         </p>
       </section>
 
       <section id="projects" className="section">
-        <h3>Projekty</h3>
+        <h3>Projects</h3>
         <div className="projects">
-          <div className="project-card">
-            <h4>Projekt 1</h4>
-            <p>2D nieskończona gra</p>
-            <a href="#" style={{ color: currentScheme.accent }}>GitHub</a>
-          </div>
-          <div className="project-card">
-            <h4>Projekt 2</h4>
-            <p>Aplikacja testowa</p>
-            <a href="#" style={{ color: currentScheme.accent }}>GitHub</a>
-          </div>
-          <div className="project-card">
-            <h4>Projekt 3</h4>
-            <p>Inny pomysł</p>
-            <a href="#" style={{ color: currentScheme.accent }}>GitHub</a>
-          </div>
+          {[
+            { title: "Projekt 1", desc: "2D nieskończona gra", link: "#" },
+            { title: "Projekt 2", desc: "Aplikacja testowa", link: "#" },
+            { title: "Projekt 3", desc: "Inny pomysł", link: "#" }
+          ].map((project, index) => (
+            <motion.div
+              key={index}
+              data-index={index}
+              className="project-card"
+              initial={{ 
+                opacity: 0, 
+                x: index % 2 === 0 ? -100 : 100,
+                y: 50
+              }}
+              animate={
+                visibleProjects.includes(index)
+                  ? { opacity: 1, x: 0, y: 0 }
+                  : { opacity: 0, x: index % 2 === 0 ? -100 : 100, y: 50 }
+              }
+              transition={{
+                duration: 0.6 * settings.animationSpeed,
+                delay: index * 0.2 * settings.animationSpeed,
+                type: "spring",
+                stiffness: 100
+              }}
+            >
+              <h4>{project.title}</h4>
+              <p>{project.desc}</p>
+              <a href={project.link} style={{ color: currentScheme.accent }}>GitHub</a>
+            </motion.div>
+          ))}
         </div>
       </section>
 
       <section id="contact" className="contact">
-        <h3>Kontakt</h3>
+        <h3>contact</h3>
         <div className="icons">
           <a href="https://github.com/H1kkk1" target="_blank" style={{ color: currentScheme.accent }}>
             GitHub
