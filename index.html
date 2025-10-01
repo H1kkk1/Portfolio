@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moje Portfolio</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: white;
+      line-height: 1.6;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      background: rgba(0, 0, 0, 0.3);
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(8px);
+    }
+
+    header h1 {
+      color: #a855f7;
+      font-size: 24px;
+    }
+
+    nav a {
+      margin-left: 20px;
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #a855f7;
+    }
+
+    section {
+      max-width: 1000px;
+      margin: 80px auto;
+      padding: 0 20px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-top: 60px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .hero h2 {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .hero span {
+      color: #a855f7;
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .project-card {
+      background: #1e1b3a;
+      padding: 20px;
+      border-radius: 12px;
+      transition: transform 0.3s;
+    }
+
+    .project-card:hover {
+      transform: scale(1.05);
+    }
+
+    .project-card h4 {
+      margin-top: 0;
+      color: #a855f7;
+    }
+
+    .contact {
+      text-align: center;
+    }
+
+    .icons a {
+      margin: 0 15px;
+      color: #a855f7;
+      font-size: 28px;
+      transition: color 0.3s;
+    }
+
+    .icons a:hover {
+      color: white;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+  <!-- Ikony z Font Awesome -->
+  <script src="https://kit.fontawesome.com/a2e0b5c6a4.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <header>
+    <h1>Moje Portfolio</h1>
+    <nav>
+      <a href="#about">O mnie</a>
+      <a href="#projects">Projekty</a>
+      <a href="#contact">Kontakt</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Cześć, jestem <span>Filip</span></h2>
+    <p>xd</p>
+  </section>
+
+  <section id="about">
+    <h3>O mnie</h3>
+    <p>
+        nan
+    </p>
+  </section>
+
+  <section id="projects">
+    <h3>Projekty</h3>
+    <div class="projects">
+      <div class="project-card">
+        <h4>Projekt 1</h4>
+        <p></p>
+        <a href="#" target="_blank">Zobacz na GitHubie</a>
+      </div>
+      <div class="project-card">
+        <h4>Projekt 2</h4>
+        <p></p>
+        <a href="#" target="_blank">Zobacz na GitHubie</a>
+      </div>
+      <div class="project-card">
+        <h4>Projekt 3</h4>
+        <p></p>
+        <a href="#" target="_blank">Zobacz na GitHubie</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <h3>Kontakt</h3>
+    <div class="icons">
+      <a href="" target="_blank"><i class="fab fa-github"></i></a>
+      <a href="" target="_blank"><i class="fab fa-linkedin"></i></a>
+      <a href="mailto:twojemail@example.com"><i class="fas fa-envelope"></i></a>
+    </div>
+  </section>
+
+</body>
+</html>
